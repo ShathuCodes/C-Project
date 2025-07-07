@@ -5,6 +5,11 @@
 #include "canvas.h"
 #include "math3d.h"
 
+// Function prototypes
+void run_task1_clock();
+void run_task2_cube();
+void run_task3_soccer();
+
 // ==== Cube for Task 2 ====
 static vec3_t cube_vertices[] = {
     {-1, -1, -1}, {1, -1, -1},
@@ -119,15 +124,51 @@ void run_task3_soccer() {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc >= 2 && strcmp(argv[1], "task2") == 0) {
-        run_task2_cube();
-    } else if (argc >= 2 && strcmp(argv[1], "task3") == 0) {
-        run_task3_soccer();
-    } else {
+    if (argc < 2) {
         printf("Usage:\n");
+        printf("  %s task1\n", argv[0]);
         printf("  %s task2\n", argv[0]);
         printf("  %s task3\n", argv[0]);
+        return 1;
+    }
+
+    if (strcmp(argv[1], "task1") == 0) {
+        run_task1_clock();
+    } else if (strcmp(argv[1], "task2") == 0) {
+        run_task2_cube();
+    } else if (strcmp(argv[1], "task3") == 0) {
+        run_task3_soccer();
+    } else {
+        printf("Unknown task: %s\n", argv[1]);
+        printf("Usage:\n");
+        printf("  %s task1\n", argv[0]);
+        printf("  %s task2\n", argv[0]);
+        printf("  %s task3\n", argv[0]);
+        return 1;
     }
     return 0;
 }
 
+void run_task1_clock() {
+    int width = 800, height = 600;
+    canvas_t* canvas = create_canvas(width, height);
+    clear_canvas(canvas, 0.0f); // Clear to black
+
+    float center_x = width / 2.0f;
+    float center_y = height / 2.0f;
+    float line_length = fminf(width, height) / 2.5f; // Line length relative to canvas size
+
+    int num_lines = 24; // 360 / 15 = 24
+    float angle_step = 15.0f * (float)M_PI / 180.0f; // 15 degrees in radians
+
+    for (int i = 0; i < num_lines; i++) {
+        float angle = i * angle_step;
+        float end_x = center_x + line_length * cosf(angle);
+        float end_y = center_y + line_length * sinf(angle);
+        draw_line_f(canvas, center_x, center_y, end_x, end_y, 1.0f); // Use 1.0f for thickness
+    }
+
+    save_ppm(canvas, "build/task1_clock.ppm");
+    destroy_canvas(canvas);
+    printf("Rendered clock face to build/task1_clock.ppm\n");
+}

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <math.h>
-#include "../include/canvas.h"
+#include "canvas.h"
 
 canvas_t* create_canvas(int width, int height) {
     canvas_t* canvas = malloc(sizeof(canvas_t));

@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdbool.h>
-#include "../include/math3d.h"
+#include "math3d.h"
 
 float Q_rsqrt(float number) {
     const float threehalfs = 1.5F;
